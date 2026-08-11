@@ -1,30 +1,46 @@
 # Implementação de Árvore AVL
 
-## Estruturas
+Este repositório contém:
 
-[x] File: representa um arquivo com nome, tamanho e extensão.
+- Um diário de produção (arquivo txt para anotarmos as decisões tomadas e motivos, que será a base para o relatório do projeto)
 
-[x] Node: representa um nó na árvore, contém um arquivo.
+- Código fonte (arquivos .c e .h)
 
-[ ] Stack: uma pilha para algoritmos de percurso na árvore.
+- Este README, com os requisitos (feitos e por fazer), divisão de tarefas e links para referência
 
-[ ] Queue: uma fila para algoritmos de percurso na árvore.
+### Compilação
+
+```bash
+gcc arvore.c -o arvore
+```
+
+Ao adicionar a opção -g ao final do comando de compilação se torna possível debugar o código com `gdb arvore`.
 
 ## Requisitos
 
-[x] Inserção
+- [x] Inserção
 
-[ ] Remoção
+- [ ] Remoção
 
-[ ] Busca
+- [ ] Busca
 
-[ ] Rotação simples
+- [ ] Rotação simples
 
-[ ] Rotação dupla
+- [ ] Rotação dupla
 
-[ ] Algoritmo de percurso
+- [ ] Algoritmo de percurso
 
-[ ] Interface
+- [ ] Interface
+
+### Estruturas utilizadas
+
+- [x] File: representa um arquivo com nome, tamanho e extensão.
+
+- [x] Node: representa um nó na árvore, contém um arquivo.
+
+- [ ] Stack: uma pilha para algoritmos de percurso na árvore.
+
+- [ ] Queue: uma fila para algoritmos de percurso na árvore.
 
 ## Materiais para referência
 

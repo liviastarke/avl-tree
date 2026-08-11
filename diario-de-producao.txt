@@ -1,0 +1,17 @@
+Lívia: 04-11 de agosto
+
+Primeiramente, escrevi uma struct Node para conter as informações do arquivo e os dois ponteiros (esq e dir). 
+Para criar a árvore escrevi as declarações de duas funções: inicializar árvore (init_tree) e inserir nó (insert_node).
+Optei por colocar structs e declarações de funções em um header file (arvore.h) para deixar o código em arvore.c mais 
+legível, pois gostaria de escrever as funções mais gerais, como o main e init_tree, no topo, e ter as funções mais 
+específicas como push e pop no final do arquivo.
+
+Percebi que as operações em uma única struct Node ficavam com um aspecto muito manual, por envolver sempre a inicialização 
+dos ponteiros do nó, mesmo antes da inserção na árvore. Então dividi esse Node em um tipo File com nome, tamanho, extensão 
+do arquivo e identificador, e um tipo Node, que tem apenas um File e dois ponteiros. Assim, em vez de passar um nó inteiro 
+para a função de inserção, é passado somente o arquivo. 
+
+Para reduzir código redundante em insert_node, criei uma função set_node que recebe uma referência ao ponteiro que se quer 
+apontando para o novo nó e uma inserção do tipo File. Essa função apenas cria o nó alocando um espaço de memória para esse 
+ponteiro, e setando o valor especificado.
+

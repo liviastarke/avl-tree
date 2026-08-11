@@ -1,24 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "arvore.h"
 
 int main(){
-	node * tree = init_tree();
-	node new = {0, 8, "txt", NULL, NULL};
+	Node * tree = init_tree();
+	File new = {0, 8, "txt"};
 	insert_node(tree, new);
+	print_tree(tree);
 	return 0;
 }
 
-node * init_tree(){
-	node current = {1, 37215, "pdf", NULL, NULL};
-	node * root = NULL;
+Node * init_tree(){
+	File current = {1, 37215, "pdf"};
+	Node * root = NULL;
 	root = insert_node(root, current);
+
+	for (int i = 0; i < 7; i++){
+		srand(time(NULL));
+		current.id = rand();
+		root = insert_node(root, current);
+	}
+
 	return root;
 }
 
-node * insert_node(node * root, node insertion){
+Node * insert_node(Node * root, File insertion){
 	if (root == NULL){
 		set_node(&root, insertion);
 		//root = malloc(sizeof(node));
@@ -26,12 +35,12 @@ node * insert_node(node * root, node insertion){
 		return root;
 	}
 
-	if (insertion.id == root->id){
+	if (insertion.id == root->file.id){
 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
 		return root;
 	}
 
-	if (insertion.id < root->id){
+	if (insertion.id < root->file.id){
 		if (root->esq){
 			root = insert_node(root->esq, insertion);
 		}
@@ -44,8 +53,9 @@ node * insert_node(node * root, node insertion){
 	return root;
 }
 
-void set_node(node ** ptr, node new_node){
-	*ptr = malloc(sizeof(node));
+void set_node(Node ** ptr, File new_file){
+	Node new_node = {new_file, NULL, NULL};
+	*ptr = malloc(sizeof(Node));
 	check_alloc_err(*ptr);
 	**ptr = new_node;
 }
@@ -55,5 +65,21 @@ void check_alloc_err(void *pointer){
         printf("Foi detectado um erro, não foi possível criar o tabuleiro.\n");
         exit(EXIT_FAILURE); // terminar o programa com erro
     }
+}
+
+Node * remove_node(Node * root, int removed_id){
+	return root;
+}
+
+Node * search_node_id(Node * root, int removed_id){
+	return root;
+}
+
+void print_tree(Node * root){
+	if (root == NULL)
+		return;
+	printf("Nó %d\n", root->file.id);
+	print_tree(root->esq);
+	print_tree(root->dir);
 }
 

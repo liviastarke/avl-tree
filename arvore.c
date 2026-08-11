@@ -18,8 +18,8 @@ Node * init_tree(){
 	Node * root = NULL;
 	root = insert_node(root, current);
 
+	srand(time(NULL));
 	for (int i = 0; i < 7; i++){
-		srand(time(NULL));
 		current.id = rand();
 		root = insert_node(root, current);
 	}
@@ -30,8 +30,6 @@ Node * init_tree(){
 Node * insert_node(Node * root, File insertion){
 	if (root == NULL){
 		set_node(&root, insertion);
-		//root = malloc(sizeof(node));
-		//*root = insertion;
 		return root;
 	}
 
@@ -41,15 +39,12 @@ Node * insert_node(Node * root, File insertion){
 	}
 
 	if (insertion.id < root->file.id){
-		if (root->esq){
-			root = insert_node(root->esq, insertion);
-		}
-		else{
-			set_node(&(root->esq), insertion);
-			//root->esq = (node *) malloc(sizeof(node));
-			//*(root->esq) = insertion;
-		}
+		root->esq = insert_node(root->esq, insertion);
 	}
+	else if (insertion.id > root->file.id){
+                root->dir = insert_node(root->dir, insertion);
+        }
+
 	return root;
 }
 

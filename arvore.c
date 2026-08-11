@@ -7,14 +7,14 @@
 
 int main(){
 	Node * tree = init_tree();
-	File new = {0, 8, "txt"};
+	File new = {0, "meu_arquivo", 8, "txt"};
 	insert_node(tree, new);
 	print_tree(tree);
 	return 0;
 }
 
 Node * init_tree(){
-	File current = {1, 37215, "pdf"};
+	File current = {1, "Sem título", 37215, "pdf"};
 	Node * root = NULL;
 	root = insert_node(root, current);
 
@@ -73,7 +73,7 @@ Node * search_node_id(Node * root, int removed_id){
 void print_tree(Node * root){
 	if (root == NULL)
 		return;
-	printf("Nó %d\n", root->file.id);
+	printf("Nó %d: %s.%s\tTamanho: %ld bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
 	print_tree(root->esq);
 	print_tree(root->dir);
 }

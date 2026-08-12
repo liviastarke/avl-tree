@@ -18,19 +18,19 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 ## Requisitos
 
-- [x] Inserção
+- [x] Inserção (Lívia)
 
-- [ ] Remoção
+- [ ] Remoção (Bruno)
 
-- [ ] Busca
+- [ ] Busca (Lívia)
 
-- [ ] Rotação simples
+- [ ] Rotação simples (Lívia)
 
-- [ ] Rotação dupla
+- [ ] Rotação dupla (Bruno)
 
-- [ ] Algoritmo de percurso
+- [ ] Algoritmo de percurso (Bruno)
 
-- [ ] Interface
+- [ ] Interface (Bruno)
 
 ### Estruturas utilizadas
 

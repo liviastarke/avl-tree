@@ -66,8 +66,17 @@ Node * remove_node(Node * root, int removed_id){
 	return root;
 }
 
-Node * search_node_id(Node * root, int removed_id){
-	return root;
+Node * search_node_id(Node * root, int search_id){
+	if (root == NULL || root->file.id == search_id){
+		return root;
+	}
+
+	if (root->file.id < search_id){
+		return search_node_id(root->esq, search_id);
+	}
+
+	// else (root->file.id > search_value)
+	return search_node_id(root->dir, search_id);
 }
 
 void print_tree(Node * root){

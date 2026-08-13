@@ -15,3 +15,10 @@ Para reduzir código redundante em insert_node, criei uma função set_node que 
 apontando para o novo nó e uma inserção do tipo File. Essa função apenas cria o nó alocando um espaço de memória para esse 
 ponteiro, e setando o valor especificado.
 
+Lívia: 13 de agosto
+
+A função de busca foi implementada com base no visto em sala de aula. Decidi usar recursividade para legibilidade, mas posso 
+tentar mudar mais tarde para performance. A escolha do nome da função "search_node_id" foi para fazer um parelelo com as funções 
+insert_node e remove_node, adicionei "id" ao nome para ficar mais descritivo, estou ciente de que é um nome comprido, mas não 
+quero esquecer que o valor de busca não é um tipo File inteiro.
+

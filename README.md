@@ -22,7 +22,7 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [ ] Remoção (Bruno)
 
-- [ ] Busca (Lívia)
+- [x] Busca (Lívia)
 
 - [ ] Rotação simples (Lívia)
 

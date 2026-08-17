@@ -22,3 +22,28 @@ tentar mudar mais tarde para performance. A escolha do nome da função "search_
 insert_node e remove_node, adicionei "id" ao nome para ficar mais descritivo, estou ciente de que é um nome comprido, mas não 
 quero esquecer que o valor de busca não é um tipo File inteiro.
 
+Bruno: 16 de agosto
+
+Implementei a função remove_node, que permite remover um arquivo da árvore a partir do seu id. Para fazer isso, utilizei dois 
+ponteiros, current e father, para conseguir percorrer a árvore e manter uma referência ao pai do nó que seria removido. 
+Escolhi fazer essa parte de forma iterativa, pois durante a remoção seria necessário alterar os ponteiros dos nós envolvidos.
+
+Na implementação considerei os três casos possíveis para a remoção de um nó em uma árvore binária de busca: quando o nó não possui 
+filhos, quando possui apenas um filho e quando possui dois filhos. 
+No último caso, utilizei o sucessor do nó, procurando o menor elemento da subárvore direita. Depois de encontrar esse nó, copiei seu
+File para o nó que seria removido e liberei o sucessor.
+
+Também tratei o caso em que a árvore está vazia e o caso em que o id procurado não existe, fazendo a função simplesmente retornar a
+árvore sem alterações. Percebi também que a função precisava retornar a raiz, pois dependendo do nó removido a própria raiz poderia
+ser alterada.
+
+Depois, implementei um menu no main utilizando switch para permitir que as operações da árvore fossem testadas de forma mais prática. 
+As opções permitem inserir um nó, remover um nó, imprimir a árvore ou encerrar o programa. Na opção de remoção, adicionei uma entrada
+para que fosse possível informar o id do arquivo que seria removido.
+
+Para melhorar a visualização durante os testes, criei também as funções clean e pause. A primeira limpa o terminal antes de apresentar uma
+nova tela do menu, enquanto a segunda espera o usuário pressionar ENTER antes de continuar. Dessa forma, o resultado de cada operação pode 
+ser visualizado antes de voltar para o menu.
+
+Observação: futuramente será preciso fazer uma adaptação da função clean, pois ela utiliza o comando clear, que é específico de sistemas 
+baseados em Unix/Linux.

@@ -15,12 +15,14 @@ Para reduzir código redundante em insert_node, criei uma função set_node que 
 apontando para o novo nó e uma inserção do tipo File. Essa função apenas cria o nó alocando um espaço de memória para esse 
 ponteiro, e setando o valor especificado.
 
+
 Lívia: 13 de agosto
 
 A função de busca foi implementada com base no visto em sala de aula. Decidi usar recursividade para legibilidade, mas posso 
 tentar mudar mais tarde para performance. A escolha do nome da função "search_node_id" foi para fazer um parelelo com as funções 
 insert_node e remove_node, adicionei "id" ao nome para ficar mais descritivo, estou ciente de que é um nome comprido, mas não 
 quero esquecer que o valor de busca não é um tipo File inteiro.
+
 
 Bruno: 16 de agosto
 
@@ -47,3 +49,14 @@ ser visualizado antes de voltar para o menu.
 
 Observação: futuramente será preciso fazer uma adaptação da função clean, pois ela utiliza o comando clear, que é específico de sistemas 
 baseados em Unix/Linux.
+
+
+Lívia: 24 de agosto
+
+Mudei o idioma das mensagens para português, com exceção do menu (INSERT NODE, REMOVE NODE,...) porque esses são os nomes das funções. 
+Então temos (quase?) todas as variáveis e tipos dentro do código em inglês, mas a interface em português. Também alterei a função print_tree 
+para ser em ordem (inverti duas linhas).
+
+Fix: Adaptei a função clean para um print especial que move o cursor para o topo do terminal, limpando a tela sem apagar o histórico do que
+já foi impresso na tela. Dizia que não era dependente de plataforma, mas eu não testei :)
+

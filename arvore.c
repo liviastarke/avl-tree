@@ -21,7 +21,7 @@ int main(){
 		printf("| 3. PRINT TREE \t |\n");
 		printf("| 4. EXIT       \t |\n");
 		printf("==========================\n");
-		printf("CHOSE AN OPTION: ");
+		printf("ESCOLHA UMA OPÇÃO: ");
 		scanf("%d", &option);
 		switch(option){
 			case 1:
@@ -32,7 +32,7 @@ int main(){
 
 			case 2:
 				clean();
-				printf("DIGIT A VALUE TO BE ROMOVED: ");
+				printf("DIGITE UM VALOR PARA SER REMOVIDO: ");
 				scanf("%d", &value);
 				remove_node(tree, value);
 				pause();
@@ -49,7 +49,7 @@ int main(){
 			
 			default:
 				clean();
-				printf("ERROR: OPTION INVALID\n");
+				printf("ERRO: OPÇÃO INVÁLIDA\n");
 				pause();
 		}
 	}
@@ -101,7 +101,7 @@ void set_node(Node ** ptr, File new_file){
 
 void check_alloc_err(void *pointer){
     if (pointer == NULL){
-        printf("Foi detectado um erro, não foi possível criar o tabuleiro.\n");
+        printf("Fatal: Foi detectado um erro. Saindo...\n");
         exit(EXIT_FAILURE); // terminar o programa com erro
     }
 }
@@ -209,17 +209,19 @@ Node * search_node_id(Node * root, int search_id){
 void print_tree(Node * root){
 	if (root == NULL)
 		return;
-	printf("Nó %d: %s.%s\tTamanho: %ld bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
 	print_tree(root->esq);
+	printf("Nó %d: %s.%s\tTamanho: %ld bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
 	print_tree(root->dir);
 }
 
 void clean(){
-    system("clear");
+    printf("\033[H\033[2J"); // Essa sequência simplesmente 'rola' a tela para que não dê para ver nada do que estava lá antes.
+			     // Acho bom para debugar, parece que funciona em qualquer plataforma.
+    //system("clear");
 }
 
 void pause(){
-    printf("\nPress ENTER to continue...");
+    printf("\nPressione ENTER para continuar...");
     getchar();
     getchar();
 }

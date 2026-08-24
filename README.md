@@ -20,7 +20,7 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [x] Inserção (Lívia)
 
-- [ ] Remoção (Bruno)
+- [x] Remoção (Bruno)
 
 - [x] Busca (Lívia)
 
@@ -44,7 +44,13 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 ## Materiais para referência
 
+[Clear screen](https://www.geeksforgeeks.org/c/clear-console-c-language/)
+
 [C]()
+
 [C++]()
+
 [CMake](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
+
 [Qt]()
+

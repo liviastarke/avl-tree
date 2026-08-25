@@ -1,0 +1,62 @@
+Lívia: 04-11 de agosto
+
+Primeiramente, escrevi uma struct Node para conter as informações do arquivo e os dois ponteiros (esq e dir). 
+Para criar a árvore escrevi as declarações de duas funções: inicializar árvore (init_tree) e inserir nó (insert_node).
+Optei por colocar structs e declarações de funções em um header file (arvore.h) para deixar o código em arvore.c mais 
+legível, pois gostaria de escrever as funções mais gerais, como o main e init_tree, no topo, e ter as funções mais 
+específicas como push e pop no final do arquivo.
+
+Percebi que as operações em uma única struct Node ficavam com um aspecto muito manual, por envolver sempre a inicialização 
+dos ponteiros do nó, mesmo antes da inserção na árvore. Então dividi esse Node em um tipo File com nome, tamanho, extensão 
+do arquivo e identificador, e um tipo Node, que tem apenas um File e dois ponteiros. Assim, em vez de passar um nó inteiro 
+para a função de inserção, é passado somente o arquivo. 
+
+Para reduzir código redundante em insert_node, criei uma função set_node que recebe uma referência ao ponteiro que se quer 
+apontando para o novo nó e uma inserção do tipo File. Essa função apenas cria o nó alocando um espaço de memória para esse 
+ponteiro, e setando o valor especificado.
+
+
+Lívia: 13 de agosto
+
+A função de busca foi implementada com base no visto em sala de aula. Decidi usar recursividade para legibilidade, mas posso 
+tentar mudar mais tarde para performance. A escolha do nome da função "search_node_id" foi para fazer um parelelo com as funções 
+insert_node e remove_node, adicionei "id" ao nome para ficar mais descritivo, estou ciente de que é um nome comprido, mas não 
+quero esquecer que o valor de busca não é um tipo File inteiro.
+
+
+Bruno: 16 de agosto
+
+Implementei a função remove_node, que permite remover um arquivo da árvore a partir do seu id. Para fazer isso, utilizei dois 
+ponteiros, current e father, para conseguir percorrer a árvore e manter uma referência ao pai do nó que seria removido. 
+Escolhi fazer essa parte de forma iterativa, pois durante a remoção seria necessário alterar os ponteiros dos nós envolvidos.
+
+Na implementação considerei os três casos possíveis para a remoção de um nó em uma árvore binária de busca: quando o nó não possui 
+filhos, quando possui apenas um filho e quando possui dois filhos. 
+No último caso, utilizei o sucessor do nó, procurando o menor elemento da subárvore direita. Depois de encontrar esse nó, copiei seu
+File para o nó que seria removido e liberei o sucessor.
+
+Também tratei o caso em que a árvore está vazia e o caso em que o id procurado não existe, fazendo a função simplesmente retornar a
+árvore sem alterações. Percebi também que a função precisava retornar a raiz, pois dependendo do nó removido a própria raiz poderia
+ser alterada.
+
+Depois, implementei um menu no main utilizando switch para permitir que as operações da árvore fossem testadas de forma mais prática. 
+As opções permitem inserir um nó, remover um nó, imprimir a árvore ou encerrar o programa. Na opção de remoção, adicionei uma entrada
+para que fosse possível informar o id do arquivo que seria removido.
+
+Para melhorar a visualização durante os testes, criei também as funções clean e pause. A primeira limpa o terminal antes de apresentar uma
+nova tela do menu, enquanto a segunda espera o usuário pressionar ENTER antes de continuar. Dessa forma, o resultado de cada operação pode 
+ser visualizado antes de voltar para o menu.
+
+Observação: futuramente será preciso fazer uma adaptação da função clean, pois ela utiliza o comando clear, que é específico de sistemas 
+baseados em Unix/Linux.
+
+
+Lívia: 24 de agosto
+
+Mudei o idioma das mensagens para português, com exceção do menu (INSERT NODE, REMOVE NODE,...) porque esses são os nomes das funções. 
+Então temos (quase?) todas as variáveis e tipos dentro do código em inglês, mas a interface em português. Também alterei a função print_tree 
+para ser em ordem (inverti duas linhas).
+
+Fix: Adaptei a função clean para um print especial que move o cursor para o topo do terminal, limpando a tela sem apagar o histórico do que
+já foi impresso na tela. Dizia que não era dependente de plataforma, mas eu não testei :)
+

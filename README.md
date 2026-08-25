@@ -28,9 +28,9 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [ ] Rotação dupla (Bruno)
 
-- [ ] Algoritmo de percurso (Bruno)
+- [x] Algoritmo de percurso (Bruno)
 
-- [ ] Interface (Bruno)
+- [x] Interface (Bruno)
 
 ### Estruturas utilizadas
 

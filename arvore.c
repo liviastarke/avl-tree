@@ -1,9 +1,11 @@
+#include "arvore.h"
+
+#include "balanceamento.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#include "arvore.h"
 
 int main(){
 	Node * tree = init_tree();
@@ -69,6 +71,7 @@ Node * init_tree(){
 	return root;
 }
 
+// TODO: Reimplementar sem recursividade!!!
 Node * insert_node(Node * root, File insertion){
 	if (root == NULL){
 		set_node(&root, insertion);
@@ -93,7 +96,7 @@ Node * insert_node(Node * root, File insertion){
 
 
 void set_node(Node ** ptr, File new_file){
-	Node new_node = {new_file, NULL, NULL};
+	Node new_node = {new_file, 0, NULL, NULL};
 	*ptr = malloc(sizeof(Node));
 	check_alloc_err(*ptr);
 	**ptr = new_node;
@@ -123,6 +126,7 @@ Node *remove_node(Node *root, int removed_id){
         }
     }
 
+    // O valor a remover não estava na árvore
     if(current == NULL){
         return root;
     }
@@ -190,6 +194,7 @@ Node *remove_node(Node *root, int removed_id){
         free(sucessor);
     }
 
+    calc_tree_height(root);
     return root;
 }
 

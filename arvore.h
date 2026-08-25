@@ -10,6 +10,7 @@ typedef struct File{
 
 typedef struct Node{
 	File file;
+	int height;
 	struct Node * esq;
 	struct Node * dir;
 }Node;

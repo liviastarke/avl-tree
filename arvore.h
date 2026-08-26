@@ -22,6 +22,8 @@ void check_alloc_err(void * ptr);			// check pointer for alloc errors
 Node * remove_node(Node * root, int removed_id);	// if last node is removed, return NULL
 Node * search_node_id(Node * root, int search_id);
 void print_tree(Node * root);
+void emOrdem(Node * root);
+void emOrdemInversa(Node * root, int depth);
 void clean();
 void pause();
 

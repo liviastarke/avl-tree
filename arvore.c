@@ -13,16 +13,19 @@ int main(){
 	
 	int option;
 	int value;
+	int depth = 0;
 
 	while(1){
 
 		clean();
-		printf("==========================\n");
-		printf("| 1. INSERT NODE\t |\n");
-		printf("| 2. REMOVE NODE\t |\n");
-		printf("| 3. PRINT TREE \t |\n");
-		printf("| 4. EXIT       \t |\n");
-		printf("==========================\n");
+		printf("==================================\n");
+		printf("| 1. INSERIR NÓ            \t |\n");
+		printf("| 2. REMOVE NÓ             \t |\n");
+		printf("| 3. IMPRIME COMPLETO      \t |\n");
+		printf("| 4. IMPRIME ID            \t |\n");
+		printf("| 5. IMPRIME EM ORDEM      \t |\n");
+		printf("| 6. SAIR                  \t |\n");
+		printf("==================================\n");
 		printf("ESCOLHA UMA OPÇÃO: ");
 		scanf("%d", &option);
 		switch(option){
@@ -47,8 +50,20 @@ int main(){
 			break;
 			
 			case 4:
+				clean();
+				emOrdemInversa(tree, depth);
+				pause();
+			break;
+
+			case 5:
+				clean();
+				emOrdem(tree);
+				pause();
+			break;
+
+			case 6:
 				return 0;
-			
+
 			default:
 				clean();
 				printf("ERRO: OPÇÃO INVÁLIDA\n");
@@ -92,8 +107,6 @@ Node * insert_node(Node * root, File insertion){
 
 	return root;
 }
-
-
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -217,6 +230,31 @@ void print_tree(Node * root){
 	print_tree(root->esq);
 	printf("Nó %d: %s.%s\tTamanho: %ld bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
 	print_tree(root->dir);
+}
+
+void emOrdem(Node * root){
+	if (root == NULL)
+        return;
+
+    emOrdem(root->dir);
+
+    printf(" > (%d) ", root->file.id);
+
+    emOrdem(root->esq);
+}
+
+void emOrdemInversa(Node * root, int depth){
+	if (root == NULL)
+        return;
+
+    emOrdemInversa(root->dir, depth + 1);
+    
+    for(int i = 0; i < depth; i++){
+        printf("\t");
+    }
+    printf(" %d \n", root->file.id);
+
+    emOrdemInversa(root->esq, depth + 1);
 }
 
 void clean(){

@@ -8,7 +8,7 @@
 #include <time.h>
 
 int main(){
-	Node * tree = init_tree();
+	Node * tree = init_tree(); // TODO: free nós da árvore antes de terminar o programa
 	File new = {0, "meu_arquivo", 8, "txt"};
 	
 	int option;
@@ -86,27 +86,66 @@ Node * init_tree(){
 	return root;
 }
 
-// TODO: Reimplementar sem recursividade!!!
-Node * insert_node(Node * root, File insertion){
+// inserção sem recursividade
+Node * insert_node(Node * root, File insertion) {
 	if (root == NULL){
 		set_node(&root, insertion);
 		return root;
 	}
 
-	if (insertion.id == root->file.id){
-		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-		return root;
-	}
+	Node * current = root;
+	Node * parent = NULL;
 
-	if (insertion.id < root->file.id){
-		root->esq = insert_node(root->esq, insertion);
-	}
-	else if (insertion.id > root->file.id){
-                root->dir = insert_node(root->dir, insertion);
-        }
+	while (current != NULL) {
+		parent = current;
+ 		if (insertion.id < current->file.id) {
+ 			current = current->esq;
+ 		}
 
-	return root;
+		else if (insertion.id > current->file.id) {
+ 			current = current->dir;
+ 		}
+
+		else {
+			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+ 			return root;
+ 		}
+ 	}
+
+ 	if (insertion.id < parent->file.id) {
+ 		set_node(&parent->esq, insertion);
+ 	}
+
+	else {
+ 		set_node(&parent->dir, insertion);
+ 	}
+
+ 	return root;
 }
+/**
+ * insert_node recursivo não pode ser usado para balancear a árvore inteira.
+ * O que acontece é que eu já fui muito fundo em subárvores e não sei qual é a verdadeira raiz.
+ */
+// Node * insert_node(Node * root, File insertion){
+// 	if (root == NULL){
+// 		set_node(&root, insertion);
+// 		return root;
+// 	}
+
+// 	if (insertion.id == root->file.id){
+// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+// 		return root;
+// 	}
+
+// 	if (insertion.id < root->file.id){
+// 		root->esq = insert_node(root->esq, insertion);
+// 	}
+// 	else if (insertion.id > root->file.id){
+//                 root->dir = insert_node(root->dir, insertion);
+//         }
+
+// 	return root;
+// }
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -162,7 +201,7 @@ Node *remove_node(Node *root, int removed_id){
         free(current);
     }
 
-
+	// tracing bug in this path...
     else if(current->esq == NULL || current->dir == NULL){
 
         Node *son;
@@ -181,7 +220,7 @@ Node *remove_node(Node *root, int removed_id){
                 father->dir = son;
 
         }else{
-            root = son;
+            root = son; // bug probably here
         }
 
         free(current);

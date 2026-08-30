@@ -1,5 +1,21 @@
 #include "balanceamento.h"
 
+Node * autobalance(Node * tree){
+	calc_tree_height(tree);
+
+	Node * actual_node = tree;
+	// LOOP HERE, HOW?
+	int fb = actual_node->dir->height - actual_node->dir->height;
+
+	if (fb < 1){ // se dir é maior, rot esq
+		left_rotation(actual_node);
+	}
+	else if (fb > 1){ // se esq é maior, rot dir
+		right_rotation(actual_node);
+	}
+	// else: tree is balanced
+}
+
 int calc_tree_height(Node * no_raiz){
 
         int altura, altura_direita = 0, altura_esquerda = 0;

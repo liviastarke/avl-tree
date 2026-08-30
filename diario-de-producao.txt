@@ -50,6 +50,16 @@ ser visualizado antes de voltar para o menu.
 Observação: futuramente será preciso fazer uma adaptação da função clean, pois ela utiliza o comando clear, que é específico de sistemas 
 baseados em Unix/Linux.
 
+Bruno: 24 de agosto
+
+Implementei duas novas funções: emOrdem e emOrdemInversa. Na função emOrdem, utilizei o código que foi passado em aula. Já na emOrdemInversa,
+fiz uma alteração para que a árvore começasse a ser percorrida pela esquerda, em vez da direita, e terminasse pela direita, fazendo com que 
+os maiores valores fossem impressos primeiro. Essa função é utilizada em uma das opções do switch para exibir o grafo da árvore. Também utilizei
+um loop for junto com uma variável depth para definir a quantidade de espaços antes de cada nó. Esse valor varia de acordo com o nível (depth) 
+em que a função está na árvore, independentemente de ela estar percorrendo para a esquerda ou para a direita.
+
+Por fim, fiz algumas alterações no menu, adicionando uma opção para exibir os dados completos dos nós da árvore, outra para exibir os nós em
+ordem e outra para exibir o grafo da árvore. Também alterei o idioma do menu, que antes estava em inglês, para português.
 
 Lívia: 24 de agosto
 

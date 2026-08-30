@@ -8,13 +8,29 @@ Este repositório contém:
 
 - Este README, com os requisitos (feitos e por fazer), divisão de tarefas e links para referência
 
+- Relatórios de bugs...
+
+### A fazer:
+
+- Corrigir bugs
+
+- Implementar a função de autobalanceamento
+
+- Chamar a função de autobalanceamento
+
+- Implementar rotação dupla
+
+- Escrever relatório
+
 ### Compilação
 
 ```bash
-gcc arvore.c -o arvore
+gcc arvore.c balanceamento.c -o arvore
 ```
 
 Ao adicionar a opção -g ao final do comando de compilação se torna possível debugar o código com `gdb arvore`.
+
+Pretendo adicionar um [makefile](#materiais-para-referência) em breve para facilitar a compilação. (Lívia)
 
 ## Requisitos
 
@@ -24,7 +40,9 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [x] Busca (Lívia)
 
-- [ ] Rotação simples (Lívia)
+- [ ] Lógica de chamada de função de autobalanceamento (Lívia)
+
+- [x] Rotação simples (Lívia)
 
 - [ ] Rotação dupla (Bruno)
 
@@ -38,19 +56,15 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [x] Node: representa um nó na árvore, contém um arquivo.
 
-- [ ] Stack: uma pilha para algoritmos de percurso na árvore.
+- [ ] ~~Stack: uma pilha para algoritmos de percurso na árvore.~~
 
-- [ ] Queue: uma fila para algoritmos de percurso na árvore.
+- [ ] ~~Queue: uma fila para algoritmos de percurso na árvore.~~
 
 ## Materiais para referência
 
 [Clear screen](https://www.geeksforgeeks.org/c/clear-console-c-language/)
 
-[C]()
-
-[C++]()
+[Make e makefile](https://www.gnu.org/software/make/manual/make.html)
 
 [CMake](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
-
-[Qt]()
 

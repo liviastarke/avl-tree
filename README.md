@@ -8,7 +8,7 @@ Este repositório contém:
 
 - Este README, com os requisitos (feitos e por fazer), divisão de tarefas e links para referência
 
-- Relatórios de bugs...
+Para informações detalhadas sobre o desenvolvimento, consultar o diário de produção.
 
 ### A fazer:
 
@@ -56,9 +56,9 @@ Pretendo adicionar um [makefile](#materiais-para-referência) em breve para faci
 
 - [x] Node: representa um nó na árvore, contém um arquivo.
 
-- [ ] ~~Stack: uma pilha para algoritmos de percurso na árvore.~~
+- [x] Stack: uma pilha para algoritmos de percurso na árvore.
 
-- [ ] ~~Queue: uma fila para algoritmos de percurso na árvore.~~
+- [ ] Queue: uma fila para algoritmos de percurso na árvore.
 
 ## Materiais para referência
 

@@ -1,19 +1,7 @@
 #ifndef __ARVORE_H__ // assegura que as coisas sejam definidas apenas uma vez
 #define __ARVORE_H__
 
-typedef struct File{
-	int id;
-	char name[32]; // máximo 31 caracteres para o nome do arquivo, para simplificar -> também poderia ser um ponteiro para uma string alocada dinamicamente
-	long size;
-	char extension[5]; // máximo 4 caracteres de ext (para docx, circ, etc.) desconheço extensões de arquivos mais longas
-}File;
-
-typedef struct Node{
-	File file;
-	int height;
-	struct Node * esq;
-	struct Node * dir;
-}Node;
+#include "node.h"
 
 Node * init_tree();
 Node * insert_node(Node * tree, File inserted);

@@ -4,7 +4,12 @@ Node * autobalance(Node * tree){
 	calc_tree_height(tree);
 
 	Node * actual_node = tree;
-	// LOOP HERE, HOW?
+
+	// LOOP HERE, HOW? Acho que preciso de uma pilha...
+	// Stack node_stack;
+	// init_stack(&node_stack);
+	// push(&node_stack, tree);
+	// while (!is_empty_stack(&node_stack)){
 	int fb = actual_node->dir->height - actual_node->dir->height;
 
 	if (fb < 1){ // se dir é maior, rot esq

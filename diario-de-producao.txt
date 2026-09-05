@@ -50,6 +50,7 @@ ser visualizado antes de voltar para o menu.
 Observação: futuramente será preciso fazer uma adaptação da função clean, pois ela utiliza o comando clear, que é específico de sistemas 
 baseados em Unix/Linux.
 
+
 Bruno: 24 de agosto
 
 Implementei duas novas funções: emOrdem e emOrdemInversa. Na função emOrdem, utilizei o código que foi passado em aula. Já na emOrdemInversa,
@@ -61,6 +62,7 @@ em que a função está na árvore, independentemente de ela estar percorrendo p
 Por fim, fiz algumas alterações no menu, adicionando uma opção para exibir os dados completos dos nós da árvore, outra para exibir os nós em
 ordem e outra para exibir o grafo da árvore. Também alterei o idioma do menu, que antes estava em inglês, para português.
 
+
 Lívia: 24 de agosto
 
 Mudei o idioma das mensagens para português, com exceção do menu (INSERT NODE, REMOVE NODE,...) porque esses são os nomes das funções. 
@@ -69,4 +71,25 @@ para ser em ordem (inverti duas linhas).
 
 Fix: Adaptei a função clean para um print especial que move o cursor para o topo do terminal, limpando a tela sem apagar o histórico do que
 já foi impresso na tela. Dizia que não era dependente de plataforma, mas eu não testei :)
+
+
+Lívia: 29 de agosto
+
+Reimplementei a inserção para não usar recursividade, o que deve deixar a chamada de função de balanceamento mais fácil. Achei um bug na remoção.
+
+
+Lívia: 5 de setembro
+
+Meu objetivo hoje era fazer a função do balanceamento, então adicionei uma estrutura de pilha em outro arquivo C. Modifiquei a função de print 
+da pilha para mostrar o ID do arquivo, mas para tanto o programa precisava conhecer o nó e o arquivo, então separei essas structs em um outro 
+arquivo node.h e incluí no código principal da árvore e no código da pilha (nos arquivos arvore.h e stack.c).
+
+Fix: Feito isso, no mesmo commit (más práticas de programação) corrigi o bug que encontrei dia 29, bastava atribuir o valor de retorno de remove_node 
+ao ponteiro da raiz da árvore (tree), que não estava sendo atualizado.
+
+Bug: Achei outro bug assim que corrigi o último. Tentar remover o último nó da árvore (que deveria setar o ponteiro tree para NULL) causa falha de 
+segmentação. Ainda não tive tempo de investigar.
+
+Por último, no mesmo commit, tentei incluir o free dos nós usando chamadas repetidas de remove_node até que todos os elementos tenham sido removidos. 
+Como a remoção falha no último nó, obviamente não está funcionando. O programa sai com erro.
 

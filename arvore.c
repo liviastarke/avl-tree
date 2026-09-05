@@ -8,7 +8,7 @@
 #include <time.h>
 
 int main(){
-	Node * tree = init_tree(); // TODO: free nós da árvore antes de terminar o programa
+	Node * tree = init_tree();
 	File new = {0, "meu_arquivo", 8, "txt"};
 	
 	int option;
@@ -27,10 +27,11 @@ int main(){
 		printf("| 6. SAIR                  \t |\n");
 		printf("==================================\n");
 		printf("ESCOLHA UMA OPÇÃO: ");
-		scanf("%d", &option);
+		scanf("%d", &option); // TODO: sanitizar entrada (scanf não limpa o buffer ao receber entradas inválidas)
 		switch(option){
 			case 1:
 				clean();
+				// TODO: entrar o ID e nome do arquivo.
 				insert_node(tree, new);
 				pause();
 			break;
@@ -39,7 +40,7 @@ int main(){
 				clean();
 				printf("DIGITE UM VALOR PARA SER REMOVIDO: ");
 				scanf("%d", &value);
-				remove_node(tree, value);
+				tree = remove_node(tree, value);
 				pause();
 			break;
 
@@ -61,7 +62,9 @@ int main(){
 				pause();
 			break;
 
-			case 6:
+			case 6: // TODO: free nós da árvore antes de terminar o programa; dá falha de segmentação...
+				while(tree != NULL)
+					tree = remove_node(tree, tree->file.id);
 				return 0;
 
 			default:
@@ -161,7 +164,7 @@ void check_alloc_err(void *pointer){
     }
 }
 
-Node *remove_node(Node *root, int removed_id){
+Node * remove_node(Node *root, int removed_id){
     if(root == NULL)
         return root;
 
@@ -195,13 +198,12 @@ Node *remove_node(Node *root, int removed_id){
             }
 
         }else{
-            root = NULL;
+            root = NULL; // agora esse caminho não apresentou o resultado esperado
         }
 
         free(current);
     }
 
-	// tracing bug in this path...
     else if(current->esq == NULL || current->dir == NULL){
 
         Node *son;
@@ -220,7 +222,7 @@ Node *remove_node(Node *root, int removed_id){
                 father->dir = son;
 
         }else{
-            root = son; // bug probably here
+            root = son;
         }
 
         free(current);

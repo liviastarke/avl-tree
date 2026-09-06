@@ -24,7 +24,8 @@ int main(){
 		printf("| 3. IMPRIME COMPLETO      \t |\n");
 		printf("| 4. IMPRIME ID            \t |\n");
 		printf("| 5. IMPRIME EM ORDEM      \t |\n");
-		printf("| 6. SAIR                  \t |\n");
+		printf("| 6. BUSCAR NÓ POR ID      \t |\n");
+		printf("| 7. SAIR                  \t |\n");
 		printf("==================================\n");
 		printf("ESCOLHA UMA OPÇÃO: ");
 		scanf("%d", &option); // TODO: sanitizar entrada (scanf não limpa o buffer ao receber entradas inválidas)
@@ -32,8 +33,7 @@ int main(){
 			case 1:
 				clean();
 				// TODO: entrar o ID e nome do arquivo.
-				insert_node(tree, new);
-				pause();
+				tree = insert_node(tree, new);
 			break;
 
 			case 2:
@@ -41,28 +41,36 @@ int main(){
 				printf("DIGITE UM VALOR PARA SER REMOVIDO: ");
 				scanf("%d", &value);
 				tree = remove_node(tree, value);
-				pause();
 			break;
 
 			case 3:
 				clean();
 				print_tree(tree);
-				pause();
 			break;
 			
 			case 4:
 				clean();
 				emOrdemInversa(tree, depth);
-				pause();
 			break;
 
 			case 5:
 				clean();
 				emOrdem(tree);
-				pause();
 			break;
 
-			case 6: // TODO: free nós da árvore antes de terminar o programa; dá falha de segmentação...
+			case 6:
+				clean();
+				printf("Insira o ID do valor buscado: ");
+				scanf("%d", &value);
+				Node * search_result = search_node_id(tree, value);
+				if (search_result == NULL){
+					printf("Não encontrado\n");
+					break;
+				}
+				printf("Encontrado ID %d\n", search_result->file.id); // substituir por função print_node
+			break;
+
+			case 7:
 				while(tree != NULL)
 					tree = remove_node(tree, tree->file.id);
 				return 0;
@@ -70,8 +78,8 @@ int main(){
 			default:
 				clean();
 				printf("ERRO: OPÇÃO INVÁLIDA\n");
-				pause();
 		}
+		pause();
 	}
 }
 
@@ -89,68 +97,70 @@ Node * init_tree(){
 	return root;
 }
 
-// inserção sem recursividade
-Node * insert_node(Node * root, File insertion) {
+/* Inserção sem recursividade, acho que não vou usar mais... */
+// Node * insert_node(Node * root, File insertion) {
+// 	if (root == NULL){
+// 		set_node(&root, insertion); // se só tem um nó, eu não preciso balancear.
+// 		calc_tree_height(root);
+// 		return root;
+// 	}
+// 
+// 	Node * current = root;
+// 	Node * parent = NULL;
+// 
+// 	while (current != NULL) {
+// 		parent = current;
+//  		if (insertion.id < current->file.id) {
+//  			current = current->esq;
+//  		}
+// 
+// 		else if (insertion.id > current->file.id) {
+//  			current = current->dir;
+//  		}
+// 
+// 		else {
+// 			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+//  			return root;
+//  		}
+//  	}
+// 
+//  	if (insertion.id < parent->file.id) {
+//  		set_node(&parent->esq, insertion);
+//  	}
+// 
+// 	else {
+//  		set_node(&parent->dir, insertion);
+//  	}
+// 
+// 	// root = autobalance(root);
+//  	return root;
+// }
+
+/**
+ * insert_node recursivo deve ser usado para balancear a árvore.
+ * Eu viajo até o fundo em subárvores e volto chamando autabaleanceamento até a raiz.
+ */
+Node * insert_node(Node * root, File insertion){
 	if (root == NULL){
-		set_node(&root, insertion); // se só tem um nó, eu não preciso balancear.
-		calc_tree_height(root);
+		set_node(&root, insertion);
 		return root;
 	}
 
-	Node * current = root;
-	Node * parent = NULL;
+	if (insertion.id == root->file.id){
+		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+		return root;
+	}
 
-	while (current != NULL) {
-		parent = current;
- 		if (insertion.id < current->file.id) {
- 			current = current->esq;
- 		}
+	if (insertion.id < root->file.id){
+		root->esq = insert_node(root->esq, insertion);
+	}
+	else if (insertion.id > root->file.id){
+                root->dir = insert_node(root->dir, insertion);
+        }
 
-		else if (insertion.id > current->file.id) {
- 			current = current->dir;
- 		}
-
-		else {
-			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
- 			return root;
- 		}
- 	}
-
- 	if (insertion.id < parent->file.id) {
- 		set_node(&parent->esq, insertion);
- 	}
-
-	else {
- 		set_node(&parent->dir, insertion);
- 	}
-
-	root = autobalance(root);
- 	return root;
+	// root = autobalancing(root);
+	return root;
 }
-/**
- * insert_node recursivo não pode ser usado para balancear a árvore inteira.
- * O que acontece é que eu já fui muito fundo em subárvores e não sei qual é a verdadeira raiz.
- */
-// Node * insert_node(Node * root, File insertion){
-// 	if (root == NULL){
-// 		set_node(&root, insertion);
-// 		return root;
-// 	}
-
-// 	if (insertion.id == root->file.id){
-// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-// 		return root;
-// 	}
-
-// 	if (insertion.id < root->file.id){
-// 		root->esq = insert_node(root->esq, insertion);
-// 	}
-// 	else if (insertion.id > root->file.id){
-//                 root->dir = insert_node(root->dir, insertion);
-//         }
-
-// 	return root;
-// }
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -250,7 +260,7 @@ Node * remove_node(Node *root, int removed_id){
         free(sucessor);
     }
 
-    root = autobalance(root);
+    //root = autobalance(root);
     return root;
 }
 
@@ -260,11 +270,11 @@ Node * search_node_id(Node * root, int search_id){
 	}
 
 	if (root->file.id < search_id){
-		return search_node_id(root->esq, search_id);
+		return search_node_id(root->dir, search_id);
 	}
 
 	// else (root->file.id > search_value)
-	return search_node_id(root->dir, search_id);
+	return search_node_id(root->esq, search_id);
 }
 
 void print_tree(Node * root){
@@ -279,11 +289,11 @@ void emOrdem(Node * root){
 	if (root == NULL)
         return;
 
-    emOrdem(root->dir);
+    emOrdem(root->esq);
 
     printf(" > (%d) ", root->file.id);
 
-    emOrdem(root->esq);
+    emOrdem(root->dir);
 }
 
 void emOrdemInversa(Node * root, int depth){

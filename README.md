@@ -25,7 +25,7 @@ Para informações detalhadas sobre o desenvolvimento, consultar o diário de pr
 ### Compilação
 
 ```bash
-gcc arvore.c balanceamento.c -o arvore
+gcc arvore.c balanceamento.c stack.c -o arvore
 ```
 
 Ao adicionar a opção -g ao final do comando de compilação se torna possível debugar o código com `gdb arvore`.

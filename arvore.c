@@ -92,7 +92,8 @@ Node * init_tree(){
 // inserção sem recursividade
 Node * insert_node(Node * root, File insertion) {
 	if (root == NULL){
-		set_node(&root, insertion);
+		set_node(&root, insertion); // se só tem um nó, eu não preciso balancear.
+		calc_tree_height(root);
 		return root;
 	}
 
@@ -123,6 +124,7 @@ Node * insert_node(Node * root, File insertion) {
  		set_node(&parent->dir, insertion);
  	}
 
+	root = autobalance(root);
  	return root;
 }
 /**
@@ -248,7 +250,7 @@ Node * remove_node(Node *root, int removed_id){
         free(sucessor);
     }
 
-    calc_tree_height(root);
+    root = autobalance(root);
     return root;
 }
 

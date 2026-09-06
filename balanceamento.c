@@ -1,27 +1,63 @@
 #include "balanceamento.h"
+#include "stack.h"
 
 Node * autobalance(Node * tree){
+
+	// if (tree == NULL)
+	// 	return NULL;
+
 	calc_tree_height(tree);
 
-	Node * actual_node = tree;
+	Node * current;
 
-	// LOOP HERE, HOW? Acho que preciso de uma pilha...
-	// Stack node_stack;
-	// init_stack(&node_stack);
-	// push(&node_stack, tree);
-	// while (!is_empty_stack(&node_stack)){
-	int fb = actual_node->dir->height - actual_node->dir->height;
+	Stack node_stack;
+	init_stack(&node_stack);
+	push(&node_stack, current);
 
-	if (fb < 1){ // se dir é maior, rot esq
-		left_rotation(actual_node);
+	// TODO: Essa função está errada, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz.
+	//       A dica da IA do google era aproveitar a recursividade na função de inserção para ir atualizando a árvore de cima para baixo 
+	//       (que bom que eu não apaguei a versão recursiva). Só espero que essa seja a causa de aparecerem nós preenchidos com lixo de memória que causam SIGSEGV...
+	while (!is_empty_stack(&node_stack)){
+
+		int fb;
+		current = pop(&node_stack);
+
+		// Calcular o fator de balanceamento e decidir se o nó tem filhos para colocar na pilha
+		if (current->dir && current->esq){
+			fb = current->esq->height - current->dir->height;
+			push(&node_stack, current->esq);
+			push(&node_stack, current->dir);
+		}
+		else if (current->dir){
+			fb = -1 - current->dir->height;
+			push(&node_stack, current->dir);
+		}
+		else if (current->esq){
+			fb = current->esq->height - 1; // detestei essa repetição de código...
+			push(&node_stack, current->esq);
+		}
+		else{
+			fb = 0;
+		}
+
+		// Fazer rotações de acordo com o fator de balanceamento
+		if (fb < -1){ // se dir é maior, rot esq
+			tree = left_rotation(current);
+		}
+		else if (fb > 1){ // se esq é maior, rot dir
+			tree = right_rotation(current);
+		}
+		// else: tree is balanced
+
 	}
-	else if (fb > 1){ // se esq é maior, rot dir
-		right_rotation(actual_node);
-	}
-	// else: tree is balanced
+	// } while (!is_empty_stack(&node_stack));
+	return tree;
 }
 
 int calc_tree_height(Node * no_raiz){
+
+	// if (tree == NULL) // Se a árvore é nula ela não tem altura, isso faz sentido? Tem alguma utilidade?
+	//	return NAN;
 
         int altura, altura_direita = 0, altura_esquerda = 0;
 

@@ -1,44 +1,38 @@
 #include "balanceamento.h"
 #include "stack.h"
 
+#include <stddef.h>
+
 Node * autobalance(Node * tree){
 
-	// if (tree == NULL)
-	// 	return NULL;
+	if (tree == NULL)
+		return NULL;
 
 	calc_tree_height(tree);
 
-	Node * current;
-
-	Stack node_stack;
+	Stack aux_stack, node_stack;
+	init_stack(&aux_stack);
 	init_stack(&node_stack);
-	push(&node_stack, current);
+	push(&aux_stack, tree);
 
-	// TODO: Essa função está errada, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz.
+	while (!is_empty_stack(&node_stack)){
+		Node * current = pop(&aux_stack);
+		push(&node_stack, current);
+		if (current->esq)
+			push(&aux_stack, current->esq);
+		if (current->dir)
+			push(&aux_stack, current->dir);
+	}
+
+	// TODO: Essa função é ineficiente, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz, que é garantido pelo pós ordem.
+	//       Mas não é necessário sempre checar a árvore inteira.
 	//       A dica da IA do google era aproveitar a recursividade na função de inserção para ir atualizando a árvore de cima para baixo 
-	//       (que bom que eu não apaguei a versão recursiva). Só espero que essa seja a causa de aparecerem nós preenchidos com lixo de memória que causam SIGSEGV...
 	while (!is_empty_stack(&node_stack)){
 
-		int fb;
-		current = pop(&node_stack);
+		Node * current = pop(&node_stack);
 
-		// Calcular o fator de balanceamento e decidir se o nó tem filhos para colocar na pilha
-		if (current->dir && current->esq){
-			fb = current->esq->height - current->dir->height;
-			push(&node_stack, current->esq);
-			push(&node_stack, current->dir);
-		}
-		else if (current->dir){
-			fb = -1 - current->dir->height;
-			push(&node_stack, current->dir);
-		}
-		else if (current->esq){
-			fb = current->esq->height - 1; // detestei essa repetição de código...
-			push(&node_stack, current->esq);
-		}
-		else{
-			fb = 0;
-		}
+		// Calcular o fator de balanceamento
+		int fb = calc_fb(current);
 
 		// Fazer rotações de acordo com o fator de balanceamento
 		if (fb < -1){ // se dir é maior, rot esq
@@ -47,11 +41,29 @@ Node * autobalance(Node * tree){
 		else if (fb > 1){ // se esq é maior, rot dir
 			tree = right_rotation(current);
 		}
-		// else: tree is balanced
-
+		// else: subtree is balanced, go up in the tree
 	}
-	// } while (!is_empty_stack(&node_stack));
 	return tree;
+}
+
+int calc_fb(Node * node){
+	if (node == NULL)
+		return 0;
+
+	calc_tree_height(node);
+
+	int left_height, right_height;
+
+	if (node->esq)
+		left_height = node->esq->height;
+	else
+		left_height = -1;
+	if (node->dir)
+                right_height = node->dir->height;
+	else
+                right_height = -1;
+
+	return left_height - right_height;
 }
 
 int calc_tree_height(Node * no_raiz){

@@ -97,70 +97,70 @@ Node * init_tree(){
 	return root;
 }
 
-/* Inserção sem recursividade, acho que não vou usar mais... */
-// Node * insert_node(Node * root, File insertion) {
-// 	if (root == NULL){
-// 		set_node(&root, insertion); // se só tem um nó, eu não preciso balancear.
-// 		calc_tree_height(root);
-// 		return root;
-// 	}
-// 
-// 	Node * current = root;
-// 	Node * parent = NULL;
-// 
-// 	while (current != NULL) {
-// 		parent = current;
-//  		if (insertion.id < current->file.id) {
-//  			current = current->esq;
-//  		}
-// 
-// 		else if (insertion.id > current->file.id) {
-//  			current = current->dir;
-//  		}
-// 
-// 		else {
-// 			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-//  			return root;
-//  		}
-//  	}
-// 
-//  	if (insertion.id < parent->file.id) {
-//  		set_node(&parent->esq, insertion);
-//  	}
-// 
-// 	else {
-//  		set_node(&parent->dir, insertion);
-//  	}
-// 
-// 	// root = autobalance(root);
-//  	return root;
-// }
+/* Inserção sem recursividade, não sei se uso ou mudo... */
+Node * insert_node(Node * root, File insertion) {
+	if (root == NULL){
+		set_node(&root, insertion); // se só tem um nó, eu não preciso balancear.
+		calc_tree_height(root);
+		return root;
+	}
+
+	Node * current = root;
+	Node * parent = NULL;
+
+	while (current != NULL) {
+		parent = current;
+ 		if (insertion.id < current->file.id) {
+ 			current = current->esq;
+ 		}
+
+		else if (insertion.id > current->file.id) {
+ 			current = current->dir;
+ 		}
+
+		else {
+			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+ 			return root;
+ 		}
+ 	}
+
+ 	if (insertion.id < parent->file.id) {
+ 		set_node(&parent->esq, insertion);
+ 	}
+
+	else {
+ 		set_node(&parent->dir, insertion);
+ 	}
+
+	root = autobalance(root);
+ 	return root;
+}
 
 /**
  * insert_node recursivo deve ser usado para balancear a árvore.
  * Eu viajo até o fundo em subárvores e volto chamando autabaleanceamento até a raiz.
  */
-Node * insert_node(Node * root, File insertion){
-	if (root == NULL){
-		set_node(&root, insertion);
-		return root;
-	}
-
-	if (insertion.id == root->file.id){
-		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-		return root;
-	}
-
-	if (insertion.id < root->file.id){
-		root->esq = insert_node(root->esq, insertion);
-	}
-	else if (insertion.id > root->file.id){
-                root->dir = insert_node(root->dir, insertion);
-        }
-
-	// root = autobalancing(root);
-	return root;
-}
+// Node * insert_node(Node * root, File insertion){
+// 	if (root == NULL){
+// 		set_node(&root, insertion);
+// 		return root;
+// 	}
+// 
+// 	if (insertion.id == root->file.id){
+// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+// 		return root;
+// 	}
+// 
+// 	if (insertion.id < root->file.id){
+// 		root->esq = insert_node(root->esq, insertion);
+// 	}
+// 	else if (insertion.id > root->file.id){
+//                 root->dir = insert_node(root->dir, insertion);
+//         }
+// 
+// 	root = autobalance(root);
+// 	return root;
+// }
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -260,7 +260,7 @@ Node * remove_node(Node *root, int removed_id){
         free(sucessor);
     }
 
-    //root = autobalance(root);
+    root = autobalance(root);
     return root;
 }
 

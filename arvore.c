@@ -9,7 +9,6 @@
 
 int main(){
 	Node * tree = init_tree();
-	File new = {0, "meu_arquivo", 8, "txt"};
 	
 	int option;
 	int value;
@@ -18,6 +17,7 @@ int main(){
 	while(1){
 
 		clean();
+		
 		printf("==================================\n");
 		printf("| 1. INSERIR NÓ            \t |\n");
 		printf("| 2. REMOVE NÓ             \t |\n");
@@ -28,18 +28,46 @@ int main(){
 		printf("| 7. SAIR                  \t |\n");
 		printf("==================================\n");
 		printf("ESCOLHA UMA OPÇÃO: ");
-		scanf("%d", &option); // TODO: sanitizar entrada (scanf não limpa o buffer ao receber entradas inválidas)
+		option = check_int();
+
 		switch(option){
 			case 1:
 				clean();
-				// TODO: entrar o ID e nome do arquivo.
-				tree = insert_node(tree, new);
+				
+				printf("=============================\n");
+				printf("| 1.INSERIR NÓ ÚNICO        |\n");
+				printf("| 2.INSERIR ARVORE COMPLETA |\n");
+				printf("=============================\n");
+				printf("ESCOLHA UMA OPÇÃO: ");
+
+				value = check_int();
+				if(value == 1){
+					File new;
+
+					printf("Digite o ID: ");
+					new.id = check_int();
+
+					printf("Digite o nome do arquivo: ");
+					scanf("%31s", new.name);
+
+					printf("Digite o tamanho do arquivo: ");
+					new.size = check_int();
+
+					printf("Digite a extensão: ");
+					scanf("%4s", new.extension);
+
+					tree = insert_node(tree, new);
+				} else if (value == 2) {
+					//inserir arvore completa
+				} else {
+					printf("ERRO: OPÇÃO INVÁLIDA\n");
+				}
 			break;
 
 			case 2:
 				clean();
 				printf("DIGITE UM VALOR PARA SER REMOVIDO: ");
-				scanf("%d", &value);
+				value = check_int();
 				tree = remove_node(tree, value);
 			break;
 
@@ -50,12 +78,12 @@ int main(){
 			
 			case 4:
 				clean();
-				emOrdemInversa(tree, depth);
+				Reverse_in_Order(tree, depth);
 			break;
 
 			case 5:
 				clean();
-				emOrdem(tree);
+				inOrder(tree);
 			break;
 
 			case 6:
@@ -218,23 +246,23 @@ Node * remove_node(Node *root, int removed_id){
 
     else if(current->esq == NULL || current->dir == NULL){
 
-        Node *son;
+        Node *child;
 
         if(current->esq != NULL){
-            son = current->esq;
+            child = current->esq;
         }else{
-            son = current->dir;
+            child = current->dir;
         }
 
         if(current != root){
 
             if(current == father->esq)
-                father->esq = son;
+                father->esq = child;
             else
-                father->dir = son;
+                father->dir = child;
 
         }else{
-            root = son;
+            root = child;
         }
 
         free(current);
@@ -242,22 +270,22 @@ Node * remove_node(Node *root, int removed_id){
 
     else{
 
-        Node * sucessor_father = current;
-        Node * sucessor = current->dir;
+        Node * successor_father = current;
+        Node * successor = current->dir;
 
-        while(sucessor->esq != NULL){
-            sucessor_father = sucessor;
-            sucessor = sucessor->esq;
+        while(successor->esq != NULL){
+            successor_father = successor;
+            successor = successor->esq;
         }
 
-        if(sucessor_father != current)
-            sucessor_father->esq = sucessor->dir;
+        if(successor_father != current)
+            successor_father->esq = successor->dir;
         else
-            sucessor_father->dir = sucessor->dir;
+            successor_father->dir = successor->dir;
 
-        current->file = sucessor->file;
+        current->file = successor->file;
 
-        free(sucessor);
+        free(successor);
     }
 
     //root = autobalance(root);
@@ -285,29 +313,29 @@ void print_tree(Node * root){
 	print_tree(root->dir);
 }
 
-void emOrdem(Node * root){
+void inOrder(Node * root){
 	if (root == NULL)
         return;
 
-    emOrdem(root->esq);
+    inOrder(root->dir);
 
-    printf(" > (%d) ", root->file.id);
+    printf(" (%d) <", root->file.id);
 
-    emOrdem(root->dir);
+    inOrder(root->esq);
 }
 
-void emOrdemInversa(Node * root, int depth){
+void Reverse_in_Order(Node * root, int depth){
 	if (root == NULL)
         return;
 
-    emOrdemInversa(root->dir, depth + 1);
+    Reverse_in_Order(root->dir, depth + 1);
     
     for(int i = 0; i < depth; i++){
         printf("\t");
     }
     printf(" %d \n", root->file.id);
 
-    emOrdemInversa(root->esq, depth + 1);
+    Reverse_in_Order(root->esq, depth + 1);
 }
 
 void clean(){
@@ -322,3 +350,13 @@ void pause(){
     getchar();
 }
 
+int check_int(){
+    int value;
+
+    while(scanf("%d", &value) != 1){
+        while(getchar() != '\n');
+        printf("\nVALOR INVÁLIDO!\nDIGITE UM VALOR INTEIRO: ");
+    }
+
+    return value;
+}

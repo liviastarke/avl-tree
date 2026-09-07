@@ -54,7 +54,7 @@ int main(){
 							check_string(new.name, 32);
 
 							printf("Digite o tamanho do arquivo: ");
-							new.size = check_int();
+							new.size = check_long(); // tipo unsigned long pode chegar a mais de 18 quintilhões e não pode ser negativo
 
 							printf("Digite a extensão: ");
 							check_string(new.extension, 5);
@@ -357,7 +357,7 @@ void print_tree(Node * root){
 	if (root == NULL)
 		return;
 	print_tree(root->esq);
-	printf("Nó %d: %s.%s\tTamanho: %ld bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
+	printf("Nó %d: %s.%s\tTamanho: %lu bytes.\n", root->file.id, root->file.name, root->file.extension, root->file.size);
 	print_tree(root->dir);
 }
 
@@ -393,8 +393,9 @@ void clean(){
 }
 
 void pause(){
+    char c;
     printf("\nPressione ENTER para continuar...");
-    getchar();
+    while((c = getchar()) != '\n' && c != EOF); // limpar buffer de entrada se o usuário digitar algo durante o pause
 }
 
 // alteração no check_int para impedir dele pular a próxima leitura
@@ -414,11 +415,28 @@ int check_int(){
     }
 }
 
+unsigned long check_long(){
+    char entrada[100];
+    unsigned long value;
+
+    while(1){
+        fgets(entrada, sizeof(entrada), stdin);
+
+        if(sscanf(entrada, "%lu", &value) == 1){ // sscanf lê como se fosse um string
+            return value;
+        }
+
+        printf("\nVALOR INVÁLIDO!\n");
+        printf("DIGITE UM VALOR INTEIRO POSITIVO: ");
+    }
+}
+
 void check_string(char *string, int tamanho){
     while(1){
-        fgets(string, tamanho, stdin);
+        char * buffer = malloc(tamanho+1);  // A leitura é feita em um buffer um pouco maior por causa do \n que entra junto
+        fgets(buffer, tamanho+1, stdin);    // eliminamos ele e copiamos o conteúdo para a string após as operações.
 
-        if(strchr(string, '\n') == NULL){ // Se ele não encontrar o \n isso indica que a string é maior do que devia
+        if(strchr(buffer, '\n') == NULL){ // Se ele não encontrar o \n isso indica que a string é maior do que devia
             int c;
             while((c = getchar()) != '\n' && c != EOF);
 
@@ -427,7 +445,10 @@ void check_string(char *string, int tamanho){
             continue;
         }
 
-        string[strcspn(string, "\n")] = '\0'; // Econtra a posição do \n na string e troca pelo \0
+        buffer[strcspn(buffer, "\n")] = '\0'; // Econtra a posição do \n na string e troca pelo \0
+
+	strcpy(string, buffer); // Coloca o conteúdo do buffer seguramente na string
+	free(buffer);
 
         for(int i = 0; string[i] != '\0'; i++){
             if(string[i] == ' '){

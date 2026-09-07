@@ -15,6 +15,7 @@ void Reverse_in_Order(Node * root, int depth);
 void clean();
 void pause();
 int check_int();
+unsigned long check_long();
 void check_string(char *string, int tamanho);
 
 #endif

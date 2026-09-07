@@ -8,14 +8,12 @@ Node * autobalance(Node * tree){
 	if (tree == NULL)
 		return NULL;
 
-	calc_tree_height(tree);
-
 	Stack aux_stack, node_stack;
 	init_stack(&aux_stack);
 	init_stack(&node_stack);
 	push(&aux_stack, tree);
 
-	while (!is_empty_stack(&node_stack)){
+	while (!is_empty_stack(&aux_stack)){
 		Node * current = pop(&aux_stack);
 		push(&node_stack, current);
 		if (current->esq)
@@ -36,10 +34,16 @@ Node * autobalance(Node * tree){
 
 		// Fazer rotações de acordo com o fator de balanceamento
 		if (fb < -1){ // se dir é maior, rot esq
-			tree = left_rotation(current);
+			if (calc_fb(current->dir) <= 0)
+				tree = left_rotation(current); // eu preciso salvar o ponteiro para o ponteiro para esse nó current, para atualizá-lo. Eu estou matando a árvore.
+			else
+				tree = double_left_rotation(current);
 		}
 		else if (fb > 1){ // se esq é maior, rot dir
-			tree = right_rotation(current);
+			if (calc_fb(current->esq) >= 0)
+				tree = right_rotation(current);
+			else
+                                tree = double_right_rotation(current);
 		}
 		// else: subtree is balanced, go up in the tree
 	}
@@ -110,3 +114,6 @@ Node * right_rotation(Node * pivot){
         calc_tree_height(z);
         return z;
 }
+
+Node * double_left_rotation(Node * pivot){}
+Node * double_right_rotation(Node * pivot){}

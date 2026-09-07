@@ -1,4 +1,4 @@
-Lívia: 04-11 de agosto
+## Lívia: 04-11 de agosto
 
 Primeiramente, escrevi uma struct Node para conter as informações do arquivo e os dois ponteiros (esq e dir). 
 Para criar a árvore escrevi as declarações de duas funções: inicializar árvore (init_tree) e inserir nó (insert_node).
@@ -16,7 +16,7 @@ apontando para o novo nó e uma inserção do tipo File. Essa função apenas cr
 ponteiro, e setando o valor especificado.
 
 
-Lívia: 13 de agosto
+## Lívia: 13 de agosto
 
 A função de busca foi implementada com base no visto em sala de aula. Decidi usar recursividade para legibilidade, mas posso 
 tentar mudar mais tarde para performance. A escolha do nome da função "search_node_id" foi para fazer um parelelo com as funções 
@@ -24,7 +24,7 @@ insert_node e remove_node, adicionei "id" ao nome para ficar mais descritivo, es
 quero esquecer que o valor de busca não é um tipo File inteiro.
 
 
-Bruno: 16 de agosto
+## Bruno: 16 de agosto
 
 Implementei a função remove_node, que permite remover um arquivo da árvore a partir do seu id. Para fazer isso, utilizei dois 
 ponteiros, current e father, para conseguir percorrer a árvore e manter uma referência ao pai do nó que seria removido. 
@@ -51,7 +51,7 @@ Observação: futuramente será preciso fazer uma adaptação da função clean,
 baseados em Unix/Linux.
 
 
-Bruno: 24 de agosto
+## Bruno: 24 de agosto
 
 Implementei duas novas funções: emOrdem e emOrdemInversa. Na função emOrdem, utilizei o código que foi passado em aula. Já na emOrdemInversa,
 fiz uma alteração para que a árvore começasse a ser percorrida pela esquerda, em vez da direita, e terminasse pela direita, fazendo com que 
@@ -63,7 +63,7 @@ Por fim, fiz algumas alterações no menu, adicionando uma opção para exibir o
 ordem e outra para exibir o grafo da árvore. Também alterei o idioma do menu, que antes estava em inglês, para português.
 
 
-Lívia: 24 de agosto
+## Lívia: 24 de agosto
 
 Mudei o idioma das mensagens para português, com exceção do menu (INSERT NODE, REMOVE NODE,...) porque esses são os nomes das funções. 
 Então temos (quase?) todas as variáveis e tipos dentro do código em inglês, mas a interface em português. Também alterei a função print_tree 
@@ -73,12 +73,12 @@ Fix: Adaptei a função clean para um print especial que move o cursor para o to
 já foi impresso na tela. Dizia que não era dependente de plataforma, mas eu não testei :)
 
 
-Lívia: 29 de agosto
+## Lívia: 29 de agosto
 
 Reimplementei a inserção para não usar recursividade, o que deve deixar a chamada de função de balanceamento mais fácil. Achei um bug na remoção.
 
 
-Lívia: 5 de setembro
+## Lívia: 5 de setembro
 
 Meu objetivo hoje era fazer a função do balanceamento, então adicionei uma estrutura de pilha em outro arquivo C. Modifiquei a função de print 
 da pilha para mostrar o ID do arquivo, mas para tanto o programa precisava conhecer o nó e o arquivo, então separei essas structs em um outro 
@@ -93,7 +93,8 @@ segmentação. Ainda não tive tempo de investigar.
 Por último, no mesmo commit, tentei incluir o free dos nós usando chamadas repetidas de remove_node até que todos os elementos tenham sido removidos. 
 Como a remoção falha no último nó, obviamente não está funcionando. O programa sai com erro.
 
-Bruno: 6 de setembro
+
+## Bruno: 6 de setembro
 
 Realizei algumas alterações na organização e padronização do código, alterando o nome de alguns ponteiros e variáveis, como son para child e sucessor
 para successor.
@@ -116,3 +117,31 @@ do buffer quando uma string excede o tamanho definido e mantive a substituição
 Por fim, corrigi a navegação dos menus de Inserção e Impressões, permitindo permanecer nos respectivos submenus até selecionar a opção Voltar. Ajustei também a 
 função pause() para evitar problemas com a leitura do ENTER. Testei a inserção da árvore completa, a impressão em ordem, a impressão em forma de grafo e o 
 funcionamento dos menus.
+
+
+## Lívia: 6 de setembro
+
+Fix: Corrigi o bug que encontrei ontem que causava uma chamada de função para um pseudo nó composto de lixo de memória, devido a um ponteiro 
+não inicializado.
+
+Implementei uma função separada para calcular o fator de balanceamento de um nó. A função para atualizar as alturas da árvore é chamada ali, 
+garantindo que o fator de balanceamento seja sempre correto mas possivelmente ocasionando mais chamadas a calc_tree_height do que o necessário. 
+A função de balanceamento agora está sendo chamada corretamente, mas percorre a árvore toda em pós-ordem e é um pouco ineficiente. Tive a ideia 
+de passar uma pilha de nós a serem balanceados para a função autobalance, que deve ser criada em insert_node e remove_node, para não precisar 
+usar recursividade. Tentarei implementar amanhã.
+
+
+## Lívia: 7 de setembro
+
+Fix: A função autobalance não estava balanceando a árvore devido a um push na pilha errada para o percurso de pós-ordem. Rotações simples funcionais 
+agora.
+
+Incluí a assinatura das funções de rotação dupla em balanceamento.h (a implementar) para escrever a lógica de decisão entre rotação simples e dupla. 
+
+Ajustes a fazer:
+
+Investiguei alguns nós sumidos ao inserir a árvore completa com init_tree: a função de autobalanceamento está retornando o ponteiro para o último 
+nó balanceado, em vez de retornar a raiz da árvore, devido a um erro de lógica. Imagino que teremos que arranjar um jeito de salvar os nós pais de 
+current nessa função, ou melhor, um ponteiro para o ponteiro que aponta para current no seu pai (&parent->dir ou &parent->esq, que nos pouparia de 
+ter que verificar de qual lado do pai está o nosso current).
+

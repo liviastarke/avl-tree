@@ -3,31 +3,14 @@
 
 #include <stddef.h>
 
-Node * autobalance(Node * tree){
+Node * autobalance(Node * tree, Stack * node_stack){
 
 	if (tree == NULL)
 		return NULL;
 
-	Stack aux_stack, node_stack;
-	init_stack(&aux_stack);
-	init_stack(&node_stack);
-	push(&aux_stack, tree);
+	while (!is_empty_stack(node_stack)){
 
-	while (!is_empty_stack(&aux_stack)){
-		Node * current = pop(&aux_stack);
-		push(&node_stack, current);
-		if (current->esq)
-			push(&aux_stack, current->esq);
-		if (current->dir)
-			push(&aux_stack, current->dir);
-	}
-
-	// TODO: Essa função é ineficiente, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz, que é garantido pelo pós ordem.
-	//       Mas não é necessário sempre checar a árvore inteira.
-	//       A dica da IA do google era aproveitar a recursividade na função de inserção para ir atualizando a árvore de cima para baixo 
-	while (!is_empty_stack(&node_stack)){
-
-		Node * current = pop(&node_stack);
+		Node * current = pop(node_stack);
 
 		// Calcular o fator de balanceamento
 		int fb = calc_fb(current);

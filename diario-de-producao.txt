@@ -138,10 +138,11 @@ agora.
 
 Incluí a assinatura das funções de rotação dupla em balanceamento.h (a implementar) para escrever a lógica de decisão entre rotação simples e dupla. 
 
-Ajustes a fazer:
+Ajustes a fazer: Investiguei alguns nós sumidos ao inserir a árvore completa com init_tree: a função de autobalanceamento está retornando o ponteiro 
+para o último nó balanceado, em vez de retornar a raiz da árvore, devido a um erro de lógica. Imagino que teremos que arranjar um jeito de salvar os 
+nós pais de current nessa função, ou melhor, um ponteiro para o ponteiro que aponta para current no seu pai (&parent->dir ou &parent->esq, que nos 
+pouparia de ter que verificar de qual lado do pai está o nosso current).
 
-Investiguei alguns nós sumidos ao inserir a árvore completa com init_tree: a função de autobalanceamento está retornando o ponteiro para o último 
-nó balanceado, em vez de retornar a raiz da árvore, devido a um erro de lógica. Imagino que teremos que arranjar um jeito de salvar os nós pais de 
-current nessa função, ou melhor, um ponteiro para o ponteiro que aponta para current no seu pai (&parent->dir ou &parent->esq, que nos pouparia de 
-ter que verificar de qual lado do pai está o nosso current).
+Estou passando uma pilha de nós afetados para a função autobalance, que é criada durantes as iterações em insert_node e remove_node, tudo feito sem recusividade. 
+Parece estar funcionando, mas o bug que some com os nós para cima da árvore deixa os testes mais difíceis.
 

@@ -1,7 +1,7 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 
-#define STACK_SIZE 1000
+#define STACK_SIZE 100
 
 // Estrutura Pilha: LIFO - Last In, First Out
 typedef struct Stack{

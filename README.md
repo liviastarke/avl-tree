@@ -12,15 +12,11 @@ Para informações detalhadas sobre o desenvolvimento, consultar o diário de pr
 
 ### A fazer:
 
-- Corrigir bugs
+- [ ] Corrigir o bug dos nós desaparecidos
 
-- Implementar a função de autobalanceamento
+- [ ] Implementar rotação dupla
 
-- Chamar a função de autobalanceamento
-
-- Implementar rotação dupla
-
-- Escrever relatório
+- [ ] Escrever relatório
 
 ### Compilação
 
@@ -30,8 +26,6 @@ gcc arvore.c balanceamento.c stack.c -o arvore
 
 Ao adicionar a opção -g ao final do comando de compilação se torna possível debugar o código com `gdb arvore`.
 
-Pretendo adicionar um [makefile](#materiais-para-referência) em breve para facilitar a compilação. (Lívia)
-
 ## Requisitos
 
 - [x] Inserção (Lívia)
@@ -40,7 +34,7 @@ Pretendo adicionar um [makefile](#materiais-para-referência) em breve para faci
 
 - [x] Busca (Lívia)
 
-- [ ] Lógica de chamada de função de autobalanceamento (Lívia)
+- [x] Lógica de chamada de função de autobalanceamento (Lívia)
 
 - [x] Rotação simples (Lívia)
 
@@ -57,8 +51,6 @@ Pretendo adicionar um [makefile](#materiais-para-referência) em breve para faci
 - [x] Node: representa um nó na árvore, contém um arquivo.
 
 - [x] Stack: uma pilha para algoritmos de percurso na árvore.
-
-- [ ] Queue: uma fila para algoritmos de percurso na árvore.
 
 ## Materiais para referência
 

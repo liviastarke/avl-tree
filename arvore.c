@@ -1,5 +1,6 @@
 #include "arvore.h"
 
+#include "stack.h"
 #include "balanceamento.h"
 
 #include <stdio.h>
@@ -183,9 +184,12 @@ Node * insert_node(Node * root, File insertion) {
 
 	Node * current = root;
 	Node * parent = NULL;
+	Stack affected_nodes;
+	init_stack(&affected_nodes);
 
 	while (current != NULL) {
 		parent = current;
+		push(&affected_nodes, parent); // inclui root e iterações subsequentes, mas não o nó folha current
  		if (insertion.id < current->file.id) {
  			current = current->esq;
  		}
@@ -208,35 +212,9 @@ Node * insert_node(Node * root, File insertion) {
  		set_node(&parent->dir, insertion);
  	}
 
-	root = autobalance(root);
+	root = autobalance(root, &affected_nodes);
  	return root;
 }
-
-/**
- * insert_node recursivo deve ser usado para balancear a árvore.
- * Eu viajo até o fundo em subárvores e volto chamando autabaleanceamento até a raiz.
- */
-// Node * insert_node(Node * root, File insertion){
-// 	if (root == NULL){
-// 		set_node(&root, insertion);
-// 		return root;
-// 	}
-// 
-// 	if (insertion.id == root->file.id){
-// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-// 		return root;
-// 	}
-// 
-// 	if (insertion.id < root->file.id){
-// 		root->esq = insert_node(root->esq, insertion);
-// 	}
-// 	else if (insertion.id > root->file.id){
-//                 root->dir = insert_node(root->dir, insertion);
-//         }
-// 
-// 	root = autobalance(root);
-// 	return root;
-// }
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -258,9 +236,12 @@ Node * remove_node(Node *root, int removed_id){
 
     Node * current = root;
     Node * father = NULL;
+    Stack affected_nodes;
+    init_stack(&affected_nodes);
 
     while(current != NULL && current->file.id != removed_id){
         father = current;
+	push(&affected_nodes, father); // adicionar os nós no caminho para o nó removido à lista de nós afetados.
 
         if(removed_id < current->file.id){
             current = current->esq;
@@ -286,7 +267,7 @@ Node * remove_node(Node *root, int removed_id){
             }
 
         }else{
-            root = NULL; // agora esse caminho não apresentou o resultado esperado
+            root = NULL;
         }
 
         free(current);
@@ -322,9 +303,11 @@ Node * remove_node(Node *root, int removed_id){
         Node * successor = current->dir;
 
         while(successor->esq != NULL){
+	    push(&affected_nodes, successor_father); // esses nós no caminho do successor também são afetados, o ponteiro de current não é alterado com a remoção de seu valor.
             successor_father = successor;
             successor = successor->esq;
         }
+	push(&affected_nodes, successor_father); // a última atualização do pai também, mas não successor, por causa do free.
 
         if(successor_father != current)
             successor_father->esq = successor->dir;
@@ -336,7 +319,7 @@ Node * remove_node(Node *root, int removed_id){
         free(successor);
     }
 
-    root = autobalance(root);
+    root = autobalance(root, &affected_nodes);
     return root;
 }
 

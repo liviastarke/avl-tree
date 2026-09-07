@@ -93,3 +93,26 @@ segmentação. Ainda não tive tempo de investigar.
 Por último, no mesmo commit, tentei incluir o free dos nós usando chamadas repetidas de remove_node até que todos os elementos tenham sido removidos. 
 Como a remoção falha no último nó, obviamente não está funcionando. O programa sai com erro.
 
+Bruno: 6 de setembro
+
+Realizei algumas alterações na organização e padronização do código, alterando o nome de alguns ponteiros e variáveis, como son para child e sucessor
+para successor.
+
+Também corrigi a função emOrdem, que estava imprimindo os valores da direita para a esquerda. A função foi ajustada para realizar a impressão corretamente,
+percorrendo a árvore da esquerda para a direita. Além disso, alterei os nomes das funções emOrdem e emOrdemInversa para inOrdem e Reverse_in_Order,
+respectivamente.
+
+A pedido da Lívia, implementei a verificação das entradas de números inteiros. Para isso, criei a função check_int(), inicialmente utilizando getchar() para
+limpar o buffer quando uma entrada inválida fosse identificada. Posteriormente, alterei a função para utilizar fgets() junto com sscanf(), permitindo ler a 
+entrada como uma string e verificar se ela contém um valor inteiro válido, evitando problemas de leitura do buffer.
+
+Também alterei a interface de inserção de nós. Antes, os valores dos arquivos eram definidos diretamente no código. Agora, ao selecionar a opção de inserir 
+um nó, o usuário pode informar o ID, nome, tamanho e extensão do arquivo. Testei a inserção de nós utilizando essa nova interface.
+
+Além disso, ajustei a função check_string() para realizar a validação das strings lidas com fgets(). Utilizei strchr() para verificar a presença do \n, 
+identificando quando o texto ultrapassa o tamanho máximo permitido, e strcspn() para localizar e remover o \n da string. Também adicionei a limpeza do restante 
+do buffer quando uma string excede o tamanho definido e mantive a substituição de espaços por _ nos nomes dos arquivos.
+
+Por fim, corrigi a navegação dos menus de Inserção e Impressões, permitindo permanecer nos respectivos submenus até selecionar a opção Voltar. Ajustei também a 
+função pause() para evitar problemas com a leitura do ENTER. Testei a inserção da árvore completa, a impressão em ordem, a impressão em forma de grafo e o 
+funcionamento dos menus.

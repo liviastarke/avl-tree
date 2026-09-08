@@ -1,6 +1,8 @@
 #ifndef __STACK_H__
 #define __STACK_H__
 
+#include "node.h"
+
 #define STACK_SIZE 100
 
 // Estrutura Pilha: LIFO - Last In, First Out
@@ -8,6 +10,12 @@ typedef struct Stack{
 	void * items[STACK_SIZE];
 	int top;
 }Stack;
+
+typedef struct AffectedNode{
+	Node * node;
+	Node * father;
+	Node ** node_fth;
+} AffectedNode;
 
 int is_empty_stack(Stack * stack);
 

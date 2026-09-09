@@ -146,3 +146,22 @@ pouparia de ter que verificar de qual lado do pai está o nosso current).
 Estou passando uma pilha de nós afetados para a função autobalance, que é criada durantes as iterações em insert_node e remove_node, tudo feito sem recusividade. 
 Parece estar funcionando, mas o bug que some com os nós para cima da árvore deixa os testes mais difíceis.
 
+
+## Bruno: 7-8 de setembro
+
+Continuei a correção da função de autobalanceamento da árvore AVL. O principal problema encontrado era que, após uma rotação, o ponteiro da raiz da subárvore
+não estava sendo atualizado corretamente, fazendo com que partes da árvore fossem perdidas. Para resolver isso, passei a utilizar um ponteiro para o ponteiro
+que referencia o nó atual (Node **node_fth), permitindo atualizar diretamente o ponteiro do pai para a nova raiz gerada pela rotação.
+
+Também tratei separadamente o caso em que o nó desbalanceado é a própria raiz da árvore. Nesse caso, o ponteiro tree precisa ser atualizado diretamente para 
+a nova raiz após a rotação.
+
+Implementei a lógica das rotações simples e duplas no autobalance, utilizando o fator de balanceamento para decidir qual rotação deve ser realizada. As rotações
+simples à esquerda e à direita já estavam implementadas, e foram integradas ao processo de balanceamento junto com as rotações duplas.
+
+Durante os testes de remoção, encontrei uma falha de segmentação que ocorria principalmente ao remover determinados nós. Utilizei o AddressSanitizer (-fsanitize=address)
+para identificar a origem do erro, que estava ocorrendo durante o cálculo da altura em calc_tree_height, chamado a partir de calc_fb e autobalance. Após corrigir o problema
+relacionado aos ponteiros utilizados no balanceamento, a remoção passou a funcionar corretamente.
+
+Realizei testes com diferentes sequências de inserção e remoção, incluindo a remoção de folhas, nós internos, nós com dois filhos e da própria raiz. Também 
+testei a remoção sucessiva de todos os nós da árvore, verificando que a árvore continuava válida até ficar vazia, sem apresentar novas falhas de segmentação.

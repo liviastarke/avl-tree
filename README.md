@@ -38,7 +38,7 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [x] Rotação simples (Lívia)
 
-- [ ] Rotação dupla (Bruno)
+- [x] Rotação dupla (Bruno)
 
 - [x] Algoritmo de percurso (Bruno)
 

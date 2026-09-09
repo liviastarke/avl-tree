@@ -2,34 +2,59 @@
 #include "stack.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 Node * autobalance(Node * tree, Stack * node_stack){
 
 	if (tree == NULL)
 		return NULL;
-
+	
+	// TODO: Essa função é ineficiente, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz, que é garantido pelo pós ordem.
+	//       Mas não é necessário sempre checar a árvore inteira.
+	//       A dica da IA do google era aproveitar a recursividade na função de inserção para ir atualizando a árvore de cima para baixo 	
 	while (!is_empty_stack(node_stack)){
 
-		Node * current = pop(node_stack);
+		AffectedNode * affected = pop(node_stack);
+
+		Node * current = affected->node;
+		Node ** node_fth = affected->node_fth;
 
 		// Calcular o fator de balanceamento
 		int fb = calc_fb(current);
 
 		// Fazer rotações de acordo com o fator de balanceamento
 		if (fb < -1){ // se dir é maior, rot esq
+
+   			Node * new_root;
+
 			if (calc_fb(current->dir) <= 0)
-				tree = left_rotation(current); // eu preciso salvar o ponteiro para o ponteiro para esse nó current, para atualizá-lo. Eu estou matando a árvore.
+				new_root = left_rotation(current); // eu preciso salvar o ponteiro para o ponteiro para esse nó current, para atualizá-lo. Eu estou matando a árvore.
 			else
-				tree = double_left_rotation(current);
+				new_root = double_left_rotation(current);
+
+			*node_fth = new_root;
+
+			if (affected->father == NULL)
+				tree = new_root;
 		}
 		else if (fb > 1){ // se esq é maior, rot dir
+
+			Node * new_root;
+
 			if (calc_fb(current->esq) >= 0)
-				tree = right_rotation(current);
+			new_root = right_rotation(current);
 			else
-                                tree = double_right_rotation(current);
+			new_root = double_right_rotation(current);
+
+			*node_fth = new_root;
+
+			if (affected->father == NULL)
+				tree = new_root;
 		}
-		// else: subtree is balanced, go up in the tree
+
+		free(affected);
 	}
+
 	return tree;
 }
 
@@ -98,5 +123,12 @@ Node * right_rotation(Node * pivot){
         return z;
 }
 
-Node * double_left_rotation(Node * pivot){}
-Node * double_right_rotation(Node * pivot){}
+Node * double_left_rotation(Node * pivot){
+	pivot->dir = right_rotation(pivot->dir);
+	return left_rotation(pivot);
+}
+
+Node * double_right_rotation(Node * pivot){
+	pivot->esq = left_rotation(pivot->esq);
+	return right_rotation(pivot);
+}

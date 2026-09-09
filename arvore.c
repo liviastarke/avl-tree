@@ -22,7 +22,7 @@ int main(){
 		
 		printf("==================================\n");
 		printf("| 1. INSERIR NÓ            \t |\n");
-		printf("| 2. REMOVE NÓ             \t |\n");
+		printf("| 2. REMOVER NÓ            \t |\n");
 		printf("| 3. IMPRESSÕES            \t |\n");
 		printf("| 4. BUSCAR NÓ POR ID      \t |\n");
 		printf("| 5. SAIR                  \t |\n");
@@ -184,37 +184,86 @@ Node * insert_node(Node * root, File insertion) {
 
 	Node * current = root;
 	Node * parent = NULL;
+
 	Stack affected_nodes;
 	init_stack(&affected_nodes);
 
 	while (current != NULL) {
+
+		AffectedNode * affected = malloc(sizeof(AffectedNode));
+		check_alloc_err(affected);
+
+		affected->node = current;
+		affected->father = parent;
+
+		if (parent == NULL) {
+			affected->node_fth = &root;
+		}
+		else if (parent->esq == current) {
+			affected->node_fth = &parent->esq;
+		}
+		else {
+			affected->node_fth = &parent->dir;
+		}
+
+		push(&affected_nodes, affected);
+
 		parent = current;
-		push(&affected_nodes, parent); // inclui root e iterações subsequentes, mas não o nó folha current
- 		if (insertion.id < current->file.id) {
- 			current = current->esq;
- 		}
 
+		if (insertion.id < current->file.id) {
+			current = current->esq;
+		}
 		else if (insertion.id > current->file.id) {
- 			current = current->dir;
- 		}
-
+			current = current->dir;
+		}
 		else {
 			printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
- 			return root;
- 		}
- 	}
 
- 	if (insertion.id < parent->file.id) {
- 		set_node(&parent->esq, insertion);
- 	}
+			while (!is_empty_stack(&affected_nodes)) {
+				free(pop(&affected_nodes));
+			}
 
+			return root;
+		}
+	}
+
+	if (insertion.id < parent->file.id) {
+		set_node(&parent->esq, insertion);
+	}
 	else {
- 		set_node(&parent->dir, insertion);
- 	}
+		set_node(&parent->dir, insertion);
+	}
 
 	root = autobalance(root, &affected_nodes);
- 	return root;
+
+	return root;
 }
+
+/**
+ * insert_node recursivo deve ser usado para balancear a árvore.
+ * Eu viajo até o fundo em subárvores e volto chamando autabaleanceamento até a raiz.
+ */
+// Node * insert_node(Node * root, File insertion){
+// 	if (root == NULL){
+// 		set_node(&root, insertion);
+// 		return root;
+// 	}
+// 
+// 	if (insertion.id == root->file.id){
+// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
+// 		return root;
+// 	}
+// 
+// 	if (insertion.id < root->file.id){
+// 		root->esq = insert_node(root->esq, insertion);
+// 	}
+// 	else if (insertion.id > root->file.id){
+//                 root->dir = insert_node(root->dir, insertion);
+//         }
+// 
+// 	root = autobalance(root);
+// 	return root;
+// }
 
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
@@ -234,40 +283,66 @@ Node * remove_node(Node *root, int removed_id){
     if(root == NULL)
         return root;
 
-    Node * current = root;
-    Node * father = NULL;
+    Node *current = root;
+    Node *father = NULL;
+
     Stack affected_nodes;
     init_stack(&affected_nodes);
 
     while(current != NULL && current->file.id != removed_id){
+
+        AffectedNode *affected = malloc(sizeof(AffectedNode));
+        check_alloc_err(affected);
+
+        affected->node = current;
+        affected->father = father;
+
+        if(father == NULL){
+            affected->node_fth = &root;
+        }
+
+        else if(father->esq == current){
+            affected->node_fth = &father->esq;
+        }
+
+        else{
+            affected->node_fth = &father->dir;
+        }
+
+        push(&affected_nodes, affected);
+
         father = current;
-	push(&affected_nodes, father); // adicionar os nós no caminho para o nó removido à lista de nós afetados.
 
         if(removed_id < current->file.id){
             current = current->esq;
-        }else{
+        }
+
+        else{
             current = current->dir;
         }
     }
 
-    // O valor a remover não estava na árvore
     if(current == NULL){
+
+        while(!is_empty_stack(&affected_nodes)){
+            free(pop(&affected_nodes));
+        }
+
         return root;
     }
 
-
     if(current->esq == NULL && current->dir == NULL){
 
-        if(current != root){
-
-            if(father->esq == current){
-                father->esq = NULL;
-            }else{
-                father->dir = NULL;
-            }
-
-        }else{
+        if(father == NULL){
             root = NULL;
+        }
+
+        else if(father->esq == current){
+            father->esq = NULL;
+        }
+		
+        else{
+            father->dir = NULL;
         }
 
         free(current);
@@ -279,19 +354,22 @@ Node * remove_node(Node *root, int removed_id){
 
         if(current->esq != NULL){
             child = current->esq;
-        }else{
+        }
+        else{
             child = current->dir;
         }
 
-        if(current != root){
-
-            if(current == father->esq)
-                father->esq = child;
-            else
-                father->dir = child;
-
-        }else{
+        if(father == NULL){
+            // current é a raiz
             root = child;
+        }
+
+        else if(father->esq == current){
+            father->esq = child;
+        }
+
+        else{
+            father->dir = child;
         }
 
         free(current);
@@ -299,27 +377,64 @@ Node * remove_node(Node *root, int removed_id){
 
     else{
 
-        Node * successor_father = current;
-        Node * successor = current->dir;
+        Node *successor_father = current;
+        Node *successor = current->dir;
 
         while(successor->esq != NULL){
-	    push(&affected_nodes, successor_father); // esses nós no caminho do successor também são afetados, o ponteiro de current não é alterado com a remoção de seu valor.
+
+            AffectedNode *affected = malloc(sizeof(AffectedNode));
+            check_alloc_err(affected);
+
+            affected->node = successor;
+            affected->father = successor_father;
+
+            if(successor_father->esq == successor){
+                affected->node_fth = &successor_father->esq;
+            }
+            else{
+                affected->node_fth = &successor_father->dir;
+            }
+
+            push(&affected_nodes, affected);
+
             successor_father = successor;
             successor = successor->esq;
         }
-	push(&affected_nodes, successor_father); // a última atualização do pai também, mas não successor, por causa do free.
 
-        if(successor_father != current)
+        if(successor_father != current){
             successor_father->esq = successor->dir;
-        else
-            successor_father->dir = successor->dir;
+        }
+
+        else{
+            current->dir = successor->dir;
+        }
 
         current->file = successor->file;
 
         free(successor);
+
+        AffectedNode *affected = malloc(sizeof(AffectedNode));
+        check_alloc_err(affected);
+
+        affected->node = current;
+        affected->father = father;
+
+        if(father == NULL){
+            affected->node_fth = &root;
+        }
+        else if(father->esq == current){
+            affected->node_fth = &father->esq;
+        }
+        else{
+            affected->node_fth = &father->dir;
+        }
+
+        push(&affected_nodes, affected);
     }
 
+
     root = autobalance(root, &affected_nodes);
+
     return root;
 }
 

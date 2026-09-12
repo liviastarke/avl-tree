@@ -239,32 +239,6 @@ Node * insert_node(Node * root, File insertion) {
 	return root;
 }
 
-/**
- * insert_node recursivo deve ser usado para balancear a árvore.
- * Eu viajo até o fundo em subárvores e volto chamando autabaleanceamento até a raiz.
- */
-// Node * insert_node(Node * root, File insertion){
-// 	if (root == NULL){
-// 		set_node(&root, insertion);
-// 		return root;
-// 	}
-// 
-// 	if (insertion.id == root->file.id){
-// 		printf("Árvores binárias de busca não permitem elementos duplicados. ID %d já existe.\n", insertion.id);
-// 		return root;
-// 	}
-// 
-// 	if (insertion.id < root->file.id){
-// 		root->esq = insert_node(root->esq, insertion);
-// 	}
-// 	else if (insertion.id > root->file.id){
-//                 root->dir = insert_node(root->dir, insertion);
-//         }
-// 
-// 	root = autobalance(root);
-// 	return root;
-// }
-
 void set_node(Node ** ptr, File new_file){
 	Node new_node = {new_file, 0, NULL, NULL};
 	*ptr = malloc(sizeof(Node));
@@ -543,7 +517,7 @@ void check_string(char *string, int tamanho){
             continue;
         }
 
-        buffer[strcspn(buffer, "\n")] = '\0'; // Econtra a posição do \n na string e troca pelo \0
+        buffer[strcspn(buffer, "\n")] = '\0'; // Encontra a posição do \n na string e troca pelo \0
 
 	strcpy(string, buffer); // Coloca o conteúdo do buffer seguramente na string
 	free(buffer);

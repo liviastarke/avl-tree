@@ -9,9 +9,6 @@ Node * autobalance(Node * tree, Stack * node_stack){
 	if (tree == NULL)
 		return NULL;
 	
-	// TODO: Essa função é ineficiente, o valor a ser balanceado tem que ser o mais baixo que está desbalanceado, ou seja, mais longe da raiz, que é garantido pelo pós ordem.
-	//       Mas não é necessário sempre checar a árvore inteira.
-	//       A dica da IA do google era aproveitar a recursividade na função de inserção para ir atualizando a árvore de cima para baixo 	
 	while (!is_empty_stack(node_stack)){
 
 		AffectedNode * affected = pop(node_stack);
@@ -28,7 +25,7 @@ Node * autobalance(Node * tree, Stack * node_stack){
    			Node * new_root;
 
 			if (calc_fb(current->dir) <= 0)
-				new_root = left_rotation(current); // eu preciso salvar o ponteiro para o ponteiro para esse nó current, para atualizá-lo. Eu estou matando a árvore.
+				new_root = left_rotation(current);
 			else
 				new_root = double_left_rotation(current);
 

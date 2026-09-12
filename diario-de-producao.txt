@@ -73,6 +73,14 @@ Fix: Adaptei a função clean para um print especial que move o cursor para o to
 já foi impresso na tela. Dizia que não era dependente de plataforma, mas eu não testei :)
 
 
+## Lívia: 24-26 de agosto
+
+Adicionei um arquivo separado balanceamento.c e seu header file balanceamento.h e escrevi as funções de rotação simples conforme visto em aula. 
+Incluí em Node um novo elemento para armazenar a altura da árvore e incluí em balanceamento.c uma função para atualizar a altura da árvore, que 
+eu tinha feito como exercício de uma aula anterior, foram necessárias algumas adaptações. Será necessário escrever uma outra função para fazer 
+a chamada dessas conforme necessário.
+
+
 ## Lívia: 29 de agosto
 
 Reimplementei a inserção para não usar recursividade, o que deve deixar a chamada de função de balanceamento mais fácil. Achei um bug na remoção.

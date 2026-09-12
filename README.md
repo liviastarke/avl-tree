@@ -10,14 +10,6 @@ Este repositório contém:
 
 Para informações detalhadas sobre o desenvolvimento, consultar o diário de produção.
 
-### A fazer:
-
-- [ ] Corrigir o bug dos nós desaparecidos
-
-- [ ] Implementar rotação dupla
-
-- [ ] Escrever relatório
-
 ### Compilação
 
 ```bash
@@ -34,7 +26,7 @@ Ao adicionar a opção -g ao final do comando de compilação se torna possível
 
 - [x] Busca (Lívia)
 
-- [x] Lógica de chamada de função de autobalanceamento (Lívia)
+- [x] Lógica de chamada de função de autobalanceamento (ambos)
 
 - [x] Rotação simples (Lívia)
 
